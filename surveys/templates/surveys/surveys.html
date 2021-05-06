@@ -5,6 +5,8 @@
     <title>Surveys</title>
 </head>
 <body>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'surveys/style.css' %}">
     <h1>Surveys</h1>
     <ul>
         {% for survey in surveys %}
@@ -12,6 +14,5 @@
             <br>
         {% endfor %}
     </ul>
-
 </body>
 </html>

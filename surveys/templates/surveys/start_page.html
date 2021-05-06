@@ -5,6 +5,8 @@
     <title>Start Page</title>
 </head>
 <body>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'surveys/style.css' %}">
     <form action="surveys/">
         <button class="start_page">Surveys</button>
     </form>

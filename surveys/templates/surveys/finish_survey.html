@@ -5,6 +5,8 @@
     <title>Finished {{ survey }}</title>
 </head>
 <body>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'surveys/style.css' %}">
     <h1>Your answers</h1>
     <form action="/">
         <ul>
