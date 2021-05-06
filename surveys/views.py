@@ -96,3 +96,31 @@ def results_surveys(request):
         ...
     context = {'surveys': surveys_set}
     return render(request=request, template_name='surveys/results_surveys.html', context=context)
+
+
+def results_questions(request, survey_name):
+    answers_dict = {}
+    try:
+        if not request.session.exists(request.session.session_key):
+            request.session.create()
+
+        user = get_object_or_404(Users, session_key=request.session.session_key)
+        answer_choices = user.u_answers.through.objects.filter(users_id=user.id)
+
+        answers_set = set()
+        for answer_choice in answer_choices:
+            answers_set.add(get_object_or_404(AnswerChoices, id=answer_choice.answerchoices_id))
+
+        survey = get_object_or_404(Surveys, name=survey_name)
+        questions_list = get_list_or_404(Questions, survey_id=survey.id)
+
+        for question in questions_list:
+            answers_dict[question.text] = []
+            for answer in answers_set:
+                if answer.question_id == question.id:
+                    answers_dict[question.text].append(answer.description)
+
+    except (Users.u_answers.through.DoesNotExist, Http404):
+        ...
+    context = {'answers': answers_dict}
+    return render(request=request, template_name='surveys/results_questions.html', context=context)
