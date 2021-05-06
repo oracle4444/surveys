@@ -1,3 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 
-# Create your views here.
+
+def start_page(request):
+    context = {}
+    return render(request=request, template_name='surveys/start_page.html', context=context)
