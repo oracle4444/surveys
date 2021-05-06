@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ survey }}</title>
+</head>
+<body>
+    <h1>{{ survey }}</h1>
+    <form action="finish/" method="POST">
+        <ul>
+        {% for question in questions %}
+            <li><h2>{{ question.text }}</h2></li>
+            <br>
+            {% if question.type == "text" %}
+                <input type="text" name="{{ question.id }}">
+            {% elif question.type == "single" %}
+                {% for answer in answers %}
+                    {% if answer.question_id == question.id %}
+                        <input type="radio" name="{{ question.id }}" value="{{ answer.id }}">{{ answer.description }}
+                    {% endif %}
+                {% endfor %}
+            {% elif question.type == "multiple" %}
+                {% for answer in answers %}
+                    {% if answer.question_id == question.id %}
+                        <input type="checkbox" name="{{ question.id }}" value="{{ answer.id }}">{{ answer.description }}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        </ul>
+        {% csrf_token %}
+        <button>Done</button>
+    </form>
+
+</body>
+</html>
