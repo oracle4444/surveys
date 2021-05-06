@@ -1,0 +1,15 @@
+version: '3.3' 
+services:
+ db:
+    build: 
+        dockerfile: Dockerfile_db
+        context: ./context_db
+    environment:
+        - POSTGRES_PASSWORD="postgres"
+        - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+        - 127.0.0.1:5432:5432
+    volumes:
+        - ./dockerfiles/pgdata:/var/lib/postgresql/pgdata
+
+
