@@ -5,17 +5,10 @@ body {
 h1 {
     text-align: center;
     position: relative;
-    border: dashed !important;
-    border-color: #ccc !important;
-    border-radius: 10px !important;
     color: #444444;
 }
 
 h2 {
-    position: relative;
-    border: dashed !important;
-    border-color: #ccc !important;
-    border-radius: 10px !important;
     color: #444444;
 }
 
