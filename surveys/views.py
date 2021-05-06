@@ -1,10 +1,17 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404, get_list_or_404, Http404
 from django.utils import timezone
 
-from .models import Surveys, Questions, AnswerChoices
+from .models import Surveys, Questions, AnswerChoices, Users
 
 
 def start_page(request):
+    try:
+        if not request.session.exists(request.session.session_key):
+            request.session.create()
+        get_object_or_404(Users, session_key=request.session.session_key)
+    except Http404:
+        user = Users(session_key=request.session.session_key)
+        user.save()
     context = {}
     return render(request=request, template_name='surveys/start_page.html', context=context)
 
@@ -32,6 +39,12 @@ def questions(request, survey_name):
 
 
 def finish_survey(request, survey_name):
+    try:
+        user = get_object_or_404(Users, session_key=request.session.session_key)
+    except Http404:
+        user = Users(session_key=request.session.session_key)
+        user.save()
+
     answers_dict = {}
     for question_id in request.POST:
         if question_id == 'csrfmiddlewaretoken':
@@ -51,6 +64,13 @@ def finish_survey(request, survey_name):
             for ans in request.POST.getlist(question_id):
                 answer_choice = AnswerChoices.objects.get(id=int(ans))
                 answers_dict[question.text].append(answer_choice)
+
+    for answer_choices in answers_dict.values():
+        for answer_choice in answer_choices:
+            try:
+                user.u_answers.through.objects.get(users_id=user.id, answerchoices_id=answer_choice.id)
+            except user.u_answers.through.DoesNotExist:
+                user.u_answers.through.objects.create(users_id=user.id, answerchoices_id=answer_choice.id)
 
     context = {'survey': survey_name, 'answers': answers_dict}
     return render(request=request, template_name='surveys/finish_survey.html', context=context)

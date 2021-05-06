@@ -26,3 +26,8 @@ class Questions(models.Model):
 class AnswerChoices(models.Model):
     a_question = models.ForeignKey(Questions, on_delete=models.CASCADE, name='question')
     a_description = models.CharField(max_length=200, default='', name='description')
+
+
+class Users(models.Model):
+    u_session_key = models.CharField(max_length=32, name='session_key', null=False)
+    u_answers = models.ManyToManyField(AnswerChoices)
