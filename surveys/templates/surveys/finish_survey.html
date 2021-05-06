@@ -7,7 +7,7 @@
 <body>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'surveys/style_new.css' %}">
-    <h1>Your answers</h1>
+    <h1>Your saved answers</h1>
     <form action="/">
         <ul>
             {% for question, answer in answers.items %}

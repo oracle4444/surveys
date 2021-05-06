@@ -21,7 +21,7 @@ def surveys(request):
         surveys_list = get_list_or_404(Surveys, finish_date__gte=timezone.now())
     except Http404:
         surveys_list = []
-    print(surveys_list)
+
     context = {'surveys': surveys_list}
     return render(request=request, template_name='surveys/surveys.html', context=context)
 
@@ -45,9 +45,21 @@ def finish_survey(request, survey_name):
         user = Users(session_key=request.session.session_key)
         user.save()
 
+    questions_set = set()
+    try:
+        answer_choices = user.u_answers.through.objects.filter(users_id=user.id)
+        answers_set = set()
+        for answer_choice in answer_choices:
+            answers_set.add(get_object_or_404(AnswerChoices, id=answer_choice.answerchoices_id))
+
+        for answer in answers_set:
+            questions_set.add(get_object_or_404(Questions, id=answer.question_id))
+    except (Users.u_answers.through.DoesNotExist, Http404):
+        ...
+    questions_ids_set = set(str(question.id) for question in questions_set)
     answers_dict = {}
     for question_id in request.POST:
-        if question_id == 'csrfmiddlewaretoken':
+        if question_id in questions_ids_set or question_id == 'csrfmiddlewaretoken':
             continue
 
         question = get_object_or_404(Questions, id=question_id)
