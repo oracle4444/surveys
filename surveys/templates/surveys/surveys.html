@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Surveys</title>
+</head>
+<body>
+    <h1>Surveys</h1>
+    <ul>
+        {% for survey in surveys %}
+            <li><a href="{{ survey.name }}/"> {{ survey.name }} </a></li>
+            <br>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
