@@ -12,11 +12,11 @@
             <li><h2>{{ question.text }}</h2></li>
             <br>
             {% if question.type == "text" %}
-                <input type="text" name="{{ question.id }}">
+                <input type="text" name="{{ question.id }}" value="">
             {% elif question.type == "single" %}
                 {% for answer in answers %}
                     {% if answer.question_id == question.id %}
-                        <input type="radio" name="{{ question.id }}" value="{{ answer.id }}">{{ answer.description }}
+                        <input type="radio" name="{{ question.id }}" value="{{ answer.id }}" checked="True">{{ answer.description }}
                     {% endif %}
                 {% endfor %}
             {% elif question.type == "multiple" %}

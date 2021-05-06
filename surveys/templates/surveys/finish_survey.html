@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Finished {{ survey }}</title>
+</head>
+<body>
+    <h1>Your answers</h1>
+    <form action="/">
+        <ul>
+            {% for question, answer in answers.items %}
+                <h2> {{question}} </h2>
+                <br>
+                {% for ans in answer %}
+                {{ans.description}}
+                <br>
+            {% endfor %}
+            {% endfor %}
+        </ul>
+        <button>Go home</button>
+    </form>
+</body>
+</html>

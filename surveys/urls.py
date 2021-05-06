@@ -7,4 +7,5 @@ urlpatterns = [
     path('', views.start_page, name='start_page'),
     path('surveys/', views.surveys, name='surveys'),
     path('surveys/<str:survey_name>/', views.questions, name='questions'),
+    path('surveys/<str:survey_name>/finish/', views.finish_survey, name='finish'),
 ]
