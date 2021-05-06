@@ -8,6 +8,9 @@ class Surveys(models.Model):
     c_finish_date = models.DateTimeField('finish date', name='finish_date')
     c_description = models.CharField(max_length=200, name='description')
 
+    def __str__(self):
+        return self.name
+
 
 class Questions(models.Model):
     TYPES = [
@@ -18,3 +21,8 @@ class Questions(models.Model):
     c_survey = models.ForeignKey(Surveys, on_delete=models.CASCADE, name='survey')
     q_text = models.CharField(max_length=200, name='text')
     q_type = models.CharField(max_length=50, choices=TYPES, name='type')
+
+
+class AnswerChoices(models.Model):
+    a_question = models.ForeignKey(Questions, on_delete=models.CASCADE, name='question')
+    a_description = models.CharField(max_length=200, default='', name='description')

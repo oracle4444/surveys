@@ -14,5 +14,6 @@ def surveys(request):
         surveys_list = get_list_or_404(Surveys, finish_date__gte=timezone.now())
     except Http404:
         surveys_list = []
+    print(surveys_list)
     context = {'surveys': surveys_list}
     return render(request=request, template_name='surveys/surveys.html', context=context)
