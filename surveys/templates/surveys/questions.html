@@ -17,13 +17,13 @@
                 <input type="text" name="{{ question.id }}" value="">
             {% elif question.type == "single" %}
                 {% for answer in answers %}
-                    {% if answer.question_id == question.id %}
+                    {% if answer.question_id == question.id and answer.description != '' %}
                         <input type="radio" name="{{ question.id }}" value="{{ answer.id }}" checked="True">{{ answer.description }}
                     {% endif %}
                 {% endfor %}
             {% elif question.type == "multiple" %}
                 {% for answer in answers %}
-                    {% if answer.question_id == question.id %}
+                    {% if answer.question_id == question.id and answer.description != '' %}
                         <input type="checkbox" name="{{ question.id }}" value="{{ answer.id }}">{{ answer.description }}
                     {% endif %}
                 {% endfor %}

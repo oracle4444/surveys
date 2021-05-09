@@ -58,9 +58,11 @@ def finish_survey(request, survey_name):
         ...
     questions_ids_set = set(str(question.id) for question in questions_set)
     answers_dict = {}
+    last_question_id = None
     for question_id in request.POST:
         if question_id in questions_ids_set or question_id == 'csrfmiddlewaretoken':
             continue
+        last_question_id = question_id
 
         question = get_object_or_404(Questions, id=question_id)
         answers_dict[question.text] = []
@@ -76,6 +78,22 @@ def finish_survey(request, survey_name):
             for ans in request.POST.getlist(question_id):
                 answer_choice = AnswerChoices.objects.get(id=int(ans))
                 answers_dict[question.text].append(answer_choice)
+
+    try:
+        survey = get_object_or_404(Surveys, id=last_question_id)
+        questions = get_list_or_404(Questions, survey_id=survey.id)
+        if len(questions) != 0:
+            for question in questions:
+                if question.type == 'multiple' and question.id not in request.POST:
+                    try:
+                        answer = get_object_or_404(AnswerChoices, question_id=question.id, description='')
+                    except Http404:
+                        answer = AnswerChoices(question_id=question.id)
+                        answer.save()
+                    answers_dict[question.text] = []
+                    answers_dict[question.text].append(answer)
+    except Http404:
+        ...
 
     for answer_choices in answers_dict.values():
         for answer_choice in answer_choices:
